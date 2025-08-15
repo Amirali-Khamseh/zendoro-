@@ -1,5 +1,39 @@
+import { createContext, useState } from "react";
+import { Header } from "./componenets/Header";
+import { MainContent } from "./componenets/MainContent";
+import { Sidebar } from "./componenets/Sidebar";
+export type ModeContextType = {
+  name: "Standard" | "Extended" | "Long run";
+  focusTime: number;
+  shortBreak: number;
+  longBreak: number;
+};
+type ModeContextTypeExtended = ModeContextType & {
+  setMode: React.Dispatch<React.SetStateAction<ModeContextType>>;
+};
+export const modeContext = createContext({} as ModeContextTypeExtended);
+
 function App() {
-  return <main>Hello zendoro</main>;
+  const [mode, setMode] = useState<ModeContextType>({
+    name: "Standard",
+    focusTime: 25 * 60 * 1000,
+    shortBreak: 5 * 60 * 1000,
+    longBreak: 15 * 60 * 1000,
+  });
+  {
+    /*I was trying to pass setmode() 👇🏼*/
+  }
+  return (
+    <modeContext.Provider value={{ ...mode, setMode }}>
+      <main className="w-100vw  h-screen">
+        <Header />
+        <div className="flex w-full">
+          <Sidebar />
+          <MainContent />
+        </div>
+      </main>
+    </modeContext.Provider>
+  );
 }
 
 export default App;
